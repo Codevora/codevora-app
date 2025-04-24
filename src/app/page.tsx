@@ -1,103 +1,46 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+ return (
+  <div>
+   <section className="h-[650px] md:h-screen lg:h-screen bg-[radial-gradient(ellipse_130%_120%_at_top_left,#354da1,#0f0f0f_66%)] text-tulang justify-center mx-auto items-center flex flex-col gap-5">
+    {/*LOGO*/}
+    <img
+     src="/Logos/1.png"
+     alt=""
+     className=" h-[80px]  md:h-[150px] lg:h-[150px] 2xl:h-[200px] transition-all"
+    />
+    {/* About */}
+    <h1 className="text-4xl md:text-6xl lg:text-6xl 2xl:text-8xl font-bold">
+     CODEVORA<span className="text-primary">.</span>ID
+    </h1>
+    <button className="p-2 bg-tulang text-hitam rounded-lg hover:bg-opacity-80 font-semibold 2xl:text-xl">
+     <Link href="/about">Learn More About Us</Link>
+    </button>
+   </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+   <section className="h-screen bg-[radial-gradient(ellipse_65%_75%_at_right,#354da1,#0f0f0f_66%)] text-tulang justify-center mx-auto items-center flex flex-col gap-5 px-10">
+    <div className="flex flex-col lg:flex-row gap-[100px] lg:gap-[200px] justify-center items-center">
+     <div className="flex flex-col gap-5 max-w-[400px] md:max-w-[600px] lg:max-w-[600px] 2xl:max-w-[700px] items-center lg:items-start text-center lg:text-start mx-auto lg:mx-0">
+      <h1 className="text-tulang text-4xl 2xl:text-6xl font-bold">
+       WHAT IS CODEVORA?
+      </h1>
+      <div className="neon-line delay-400" />
+      <p className="md:text-2xl lg:text-2xl 2xl:text-3xl">
+       Codevora is a startup company that operates in the field of digital
+       technology. Our goal is to create and develop new innovations in the
+       digital world to facilitate business operations at both the micro and
+       macro levels.
+      </p>
+     </div>
+     <img
+      src="/Logos/1.png"
+      alt=""
+      className="h-[200px] w-[350px] lg:h-[250px] lg:w-[400px] 2xl:h-[300px] 2xl:w-[500px]"
+     />
     </div>
-  );
+   </section>
+  </div>
+ );
 }

@@ -1,29 +1,41 @@
+import {withAuth} from "next-auth/middleware";
 import {NextResponse} from "next/server";
-import withAuth from "./middlewares/withAuth";
-import type {NextRequest} from "next/server";
 
 export default withAuth(
- function middleware(request: NextRequest) {
-  // Middleware dasar yang akan di-wrap oleh withAuth
-  return NextResponse.next();
+ function middleware(req) {
+  // Redirect logic based on role or other conditions
+  const {pathname, origin} = req.nextUrl;
+  const {token} = req.nextauth;
+
+  // Jika mencoba mengakses halaman admin tanpa role admin
+  if (pathname.startsWith("/admin") && token?.role !== "admin") {
+   return NextResponse.redirect(`${origin}/unauthorized`);
+  }
+
+  // Redirect setelah login
+  if (pathname === "/auth/sign-in" && token) {
+   return NextResponse.redirect(`${origin}/admin/dashboard`);
+  }
+
+  // Redirect setelah registrasi
+  if (pathname === "/register" && token) {
+   return NextResponse.redirect(`${origin}/admin/dashboard`);
+  }
  },
  {
-  requireAuth: ["/admin", "/member", "/profile"],
-  requireAdmin: ["/admin"],
+  callbacks: {
+   authorized: ({token}) => {
+    // Jika token ada, user terautentikasi
+    return !!token;
+   },
+  },
+  pages: {
+   signIn: "/auth/sign-in",
+   error: "/error",
+  },
  }
 );
 
 export const config = {
- matcher: [
-  /*
-   * Match all request paths except:
-   * - api/ routes
-   * - _next/static (static files)
-   * - _next/image (image optimization files)
-   * - favicon.ico (favicon file)
-   * - public folder
-   * - auth routes (login, register, etc)
-   */
-  "/((?!api|_next/static|_next/image|favicon.ico|login|register|auth).*)",
- ],
+ matcher: ["/admin/:path*", "/dashboard/:path*", "/auth/sign-in", "/register"],
 };

@@ -1,9 +1,13 @@
-import {createRouteHandlerClient} from "@supabase/auth-helpers-nextjs";
-import {cookies} from "next/headers";
+import {createClient} from "@supabase/supabase-js";
+import {compare} from "bcryptjs";
 import {NextAuthOptions} from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import {compare} from "bcryptjs";
+
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const authOptions: NextAuthOptions = {
  session: {
@@ -23,31 +27,35 @@ const authOptions: NextAuthOptions = {
      throw new Error("Email dan password diperlukan");
     }
 
-    const supabase = createRouteHandlerClient({cookies});
+    try {
+     // Query user dari Supabase
+     const {data: user, error} = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", credentials.email)
+      .single();
 
-    // Cari user berdasarkan email
-    const {data: user, error} = await supabase
-     .from("users")
-     .select("*")
-     .eq("email", credentials.email)
-     .single();
+     if (error || !user) {
+      throw new Error("Email atau password salah");
+     }
 
-    if (error || !user) {
-     throw new Error("User tidak ditemukan");
+     // Verifikasi password
+     const passwordMatch = await compare(credentials.password, user.password);
+     if (!passwordMatch) {
+      throw new Error("Email atau password salah");
+     }
+
+     // Return data user yang akan disimpan di session JWT
+     return {
+      id: user.id,
+      email: user.email,
+      fullname: user.fullname,
+      role: user.role,
+     };
+    } catch (error) {
+     console.error("Login error:", error);
+     throw new Error("Terjadi kesalahan saat login");
     }
-
-    // Bandingkan password
-    const passwordMatch = await compare(credentials.password, user.password);
-    if (!passwordMatch) {
-     throw new Error("Password salah");
-    }
-
-    return {
-     id: user.id,
-     email: user.email,
-     fullname: user.fullname,
-     role: user.role,
-    };
    },
   }),
  ],
@@ -69,16 +77,15 @@ const authOptions: NextAuthOptions = {
    return session;
   },
   async redirect({url, baseUrl}) {
-   // Redirect setelah login
-   if (url === "/login") {
-    return `${baseUrl}/admin/dashboard`;
-   }
+   // Allows relative callback URLs
    if (url.startsWith("/")) return `${baseUrl}${url}`;
-   return url.startsWith(baseUrl) ? url : baseUrl;
+   // Allows callback URLs on the same origin
+   else if (new URL(url).origin === baseUrl) return url;
+   return baseUrl;
   },
  },
  pages: {
-  signIn: "/login",
+  signIn: "/auth/sign-in",
   newUser: "/register", // Halaman registrasi
  },
  debug: process.env.NODE_ENV === "development",
