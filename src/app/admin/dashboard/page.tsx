@@ -9,7 +9,6 @@ export default function AdminDashboard() {
   <div className="p-6">
    <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
    <p>Selamat datang, {session?.user?.fullname || session?.user?.email}!</p>
-   <button onClick={() => signOut()}>Logout</button>
   </div>
  );
 }
